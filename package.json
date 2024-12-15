@@ -1,0 +1,56 @@
+{
+  "name": "@diadal/array-append-to-formdata",
+  "version": "0.0.8",
+  "type": "module",
+  "description": "ablitity to append deeper array object array along with file into 'formData' ",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "author": "Diadal",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diadal/array-formData.git"
+  },
+  "bugs": {
+    "url": "https://github.com/diadal/array-formData/issues"
+  },
+  "keywords": [
+    "array",
+    "object",
+    "object array",
+    "array object"
+  ],
+  "scripts": {
+    "check-up": "yarn upgrade-interactive --latest",
+    "build": "rollup -c",
+    "rebuilt-git": "git rm -r --cached .",
+    "add-git": "git add ."
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.1",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-typescript": "^12.1.1",
+    "docgen": "^0.0.1",
+    "eslint": "^9.16.0",
+    "prettier": "^3.0.2",
+    "prettier-plugin-java": "^2.2.0",
+    "rimraf": "^6.0.1",
+    "rollup": "^4.28.0",
+    "rollup-plugin-dts": "^6.1.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "tslib": "^2.8.1",
+    "typescript": "^5.1.6"
+  },
+  "peerDependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {}
+}
