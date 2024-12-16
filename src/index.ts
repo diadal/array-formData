@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-function LoadWithIMage(formDatax: FormData, ojbval: any, finalKwy: string) {
-  if ((ojbval?.lastModified || ojbval?.lastModifiedDate) && ojbval?.size) {
+function isFIle(ojbval: any): boolean {
+  return (ojbval?.lastModified || ojbval?.lastModifiedDate) && ojbval?.size;
+}
+
+function LoadFormData(formDatax: FormData, ojbval: any, finalKwy: string) {
+  if (isFIle(ojbval)) {
     formDatax.append(finalKwy, ojbval);
   } else {
     formDatax.append(finalKwy, ojbval);
@@ -10,31 +14,54 @@ function LoadWithIMage(formDatax: FormData, ojbval: any, finalKwy: string) {
 
 function ReRun(formDatax: FormData, ojbval: any, finalKwy: string) {
   if (typeof ojbval == 'object') {
-    for (const lastStage in ojbval) {
-      const NewKey = `${finalKwy}[${lastStage}]`;
-      ReRunB(formDatax, ojbval[lastStage], NewKey);
+    if (isFIle(ojbval)) {
+      LoadFormData(formDatax, ojbval, finalKwy);
+    } else {
+      for (const lastStage in ojbval) {
+        const NewKey = `${finalKwy}[${lastStage}]`;
+        const FnextData = ojbval[lastStage];
+        if (isFIle(FnextData)) {
+          LoadFormData(formDatax, FnextData, NewKey);
+        } else {
+          ReRunB(formDatax, FnextData, NewKey);
+        }
+      }
     }
   } else {
-    LoadWithIMage(formDatax, ojbval, finalKwy);
+    LoadFormData(formDatax, ojbval, finalKwy);
   }
 }
 
 function ReRunB(formDatax: FormData, ojbval: any, finalKwy: string) {
   if (typeof ojbval == 'object') {
-    for (const lastStage in ojbval) {
-      const NewKey = `${finalKwy}[${lastStage}]`;
-      if (typeof ojbval[lastStage] == 'object') {
-        for (const nakay in ojbval[lastStage]) {
-          const KkNewKey = `${NewKey}[${nakay}]`;
-          const newsBoj = ojbval[lastStage];
-          ReRun(formDatax, newsBoj[nakay], KkNewKey);
+    if (isFIle(ojbval)) {
+      LoadFormData(formDatax, ojbval, finalKwy);
+    } else {
+      for (const lastStage in ojbval) {
+        const NewKey = `${finalKwy}[${lastStage}]`;
+        const FnextData = ojbval[lastStage];
+        if (typeof FnextData == 'object') {
+          if (isFIle(FnextData)) {
+            LoadFormData(formDatax, FnextData, NewKey);
+          } else {
+            for (const nakay in FnextData) {
+              const KkNewKey = `${NewKey}[${nakay}]`;
+              const newsBoj = FnextData;
+              const nexData = newsBoj[nakay];
+              if (isFIle(nexData)) {
+                LoadFormData(formDatax, nexData, KkNewKey);
+              } else {
+                ReRun(formDatax, nexData, KkNewKey);
+              }
+            }
+          }
+        } else {
+          LoadFormData(formDatax, FnextData, NewKey);
         }
-      } else {
-        LoadWithIMage(formDatax, ojbval[lastStage], NewKey);
       }
     }
   } else {
-    LoadWithIMage(formDatax, ojbval, finalKwy);
+    LoadFormData(formDatax, ojbval, finalKwy);
   }
 }
 
@@ -48,10 +75,7 @@ function useFormObjectLoader(
       const ojbval = payload[key];
       const finalKwy = keyName ? keyName : key;
       if (typeof ojbval == 'object') {
-        if (
-          (ojbval?.lastModified || ojbval?.lastModifiedDate) &&
-          ojbval?.size
-        ) {
+        if (isFIle(ojbval)) {
           formDatax.append(finalKwy, ojbval);
         } else {
           if (
@@ -79,13 +103,12 @@ function useFormObjectLoader(
           }
         }
       } else {
-        LoadWithIMage(formDatax, ojbval, finalKwy);
+        LoadFormData(formDatax, ojbval, finalKwy);
       }
     }
   } else {
     formDatax.append(keyName, payload);
   }
 }
-
 
 export { useFormObjectLoader };
