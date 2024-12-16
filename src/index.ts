@@ -1,4 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/**
+ * THIS FILE IS GENERATED AUTOMATICALLY.
+ * DO NOT EDIT.
+ *
+ * Created by https://github.com/diadal
+ * For any support reachout at https://github.com/diadal/array-formData/issues
+ **/
+
+ 
 
 function isFIle(ojbval: any): boolean {
   return (ojbval?.lastModified || ojbval?.lastModifiedDate) && ojbval?.size;

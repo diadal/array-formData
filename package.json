@@ -1,6 +1,6 @@
 {
   "name": "@diadal/array-append-to-formdata",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "ablitity to append deeper array object array along with file into 'formData' ",
   "main": "dist/index.js",

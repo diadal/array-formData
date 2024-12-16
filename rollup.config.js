@@ -4,7 +4,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import external from "rollup-plugin-peer-deps-external";
-import { terser } from "rollup-plugin-terser";
+// import { terser } from "rollup-plugin-terser";
 import dts from "rollup-plugin-dts";
 import typescriptEngine from "typescript";
 
@@ -29,14 +29,14 @@ export default defineConfig(
       },
     ],
     plugins: [
-      terser({
-        // remove all comments
-        format: {
-          comments: false,
-        },
-        // prevent any compression
-        compress: false,
-      }),
+      // terser({
+      //   // remove all comments
+      //   format: {
+      //     comments: false,
+      //   },
+      //   // prevent any compression
+      //   compress: false,
+      // }),
       external({ includeDependencies: true }),
       resolve(),
       commonjs(),

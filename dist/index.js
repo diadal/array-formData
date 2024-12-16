@@ -1,1 +1,122 @@
-"use strict";function e(e){return((e===null||e===void 0?void 0:e.lastModified)||(e===null||e===void 0?void 0:e.lastModifiedDate))&&(e===null||e===void 0?void 0:e.size)}function o(o,n,s){if(e(n)){o.append(s,n)}else{o.append(s,n)}}function n(n,t,i){if(typeof t=="object"){if(e(t)){o(n,t,i)}else{for(const c in t){const f=`${i}[${c}]`;const l=t[c];if(e(l)){o(n,l,f)}else{s(n,l,f)}}}}else{o(n,t,i)}}function s(s,t,i){if(typeof t=="object"){if(e(t)){o(s,t,i)}else{for(const c in t){const f=`${i}[${c}]`;const l=t[c];if(typeof l=="object"){if(e(l)){o(s,l,f)}else{for(const t in l){const i=`${f}[${t}]`;const c=l;const d=c[t];if(e(d)){o(s,d,i)}else{n(s,d,i)}}}}else{o(s,l,f)}}}}else{o(s,t,i)}}function t(i,c,f){if(typeof c=="object"){for(const l in c){const d=c[l];const u=f?f:l;if(typeof d=="object"){if(e(d)){i.append(u,d)}else{if(!u.includes("[")&&d[0]&&Object.keys(d[0]).length>0){n(i,d,u)}else{if(u.includes("[")&&d[0]&&Object.keys(d[0]).length>0){n(i,d,u)}else if(u.includes("[")&&!u.includes("][")&&Object.keys(d).length>0){s(i,d,u)}else{t(i,d,`${u}[]`)}}}}else{o(i,d,u)}}}else{i.append(f,c)}}exports.useFormObjectLoader=t;
+'use strict';
+
+/**
+ * THIS FILE IS GENERATED AUTOMATICALLY.
+ * DO NOT EDIT.
+ *
+ * Created by https://github.com/diadal
+ * For any support reachout at https://github.com/diadal/array-formData/issues
+ **/
+function isFIle(ojbval) {
+    return ((ojbval === null || ojbval === void 0 ? void 0 : ojbval.lastModified) || (ojbval === null || ojbval === void 0 ? void 0 : ojbval.lastModifiedDate)) && (ojbval === null || ojbval === void 0 ? void 0 : ojbval.size);
+}
+function LoadFormData(formDatax, ojbval, finalKwy) {
+    if (isFIle(ojbval)) {
+        formDatax.append(finalKwy, ojbval);
+    }
+    else {
+        formDatax.append(finalKwy, ojbval);
+    }
+}
+function ReRun(formDatax, ojbval, finalKwy) {
+    if (typeof ojbval == 'object') {
+        if (isFIle(ojbval)) {
+            LoadFormData(formDatax, ojbval, finalKwy);
+        }
+        else {
+            for (const lastStage in ojbval) {
+                const NewKey = `${finalKwy}[${lastStage}]`;
+                const FnextData = ojbval[lastStage];
+                if (isFIle(FnextData)) {
+                    LoadFormData(formDatax, FnextData, NewKey);
+                }
+                else {
+                    ReRunB(formDatax, FnextData, NewKey);
+                }
+            }
+        }
+    }
+    else {
+        LoadFormData(formDatax, ojbval, finalKwy);
+    }
+}
+function ReRunB(formDatax, ojbval, finalKwy) {
+    if (typeof ojbval == 'object') {
+        if (isFIle(ojbval)) {
+            LoadFormData(formDatax, ojbval, finalKwy);
+        }
+        else {
+            for (const lastStage in ojbval) {
+                const NewKey = `${finalKwy}[${lastStage}]`;
+                const FnextData = ojbval[lastStage];
+                if (typeof FnextData == 'object') {
+                    if (isFIle(FnextData)) {
+                        LoadFormData(formDatax, FnextData, NewKey);
+                    }
+                    else {
+                        for (const nakay in FnextData) {
+                            const KkNewKey = `${NewKey}[${nakay}]`;
+                            const newsBoj = FnextData;
+                            const nexData = newsBoj[nakay];
+                            if (isFIle(nexData)) {
+                                LoadFormData(formDatax, nexData, KkNewKey);
+                            }
+                            else {
+                                ReRun(formDatax, nexData, KkNewKey);
+                            }
+                        }
+                    }
+                }
+                else {
+                    LoadFormData(formDatax, FnextData, NewKey);
+                }
+            }
+        }
+    }
+    else {
+        LoadFormData(formDatax, ojbval, finalKwy);
+    }
+}
+function useFormObjectLoader(formDatax, payload, keyName) {
+    if (typeof payload == 'object') {
+        for (const key in payload) {
+            const ojbval = payload[key];
+            const finalKwy = keyName ? keyName : key;
+            if (typeof ojbval == 'object') {
+                if (isFIle(ojbval)) {
+                    formDatax.append(finalKwy, ojbval);
+                }
+                else {
+                    if (!finalKwy.includes('[') &&
+                        ojbval[0] &&
+                        Object.keys(ojbval[0]).length > 0) {
+                        ReRun(formDatax, ojbval, finalKwy);
+                    }
+                    else {
+                        if (finalKwy.includes('[') &&
+                            ojbval[0] &&
+                            Object.keys(ojbval[0]).length > 0) {
+                            ReRun(formDatax, ojbval, finalKwy);
+                        }
+                        else if (finalKwy.includes('[') &&
+                            !finalKwy.includes('][') &&
+                            Object.keys(ojbval).length > 0) {
+                            ReRunB(formDatax, ojbval, finalKwy);
+                        }
+                        else {
+                            useFormObjectLoader(formDatax, ojbval, `${finalKwy}[]`);
+                        }
+                    }
+                }
+            }
+            else {
+                LoadFormData(formDatax, ojbval, finalKwy);
+            }
+        }
+    }
+    else {
+        formDatax.append(keyName, payload);
+    }
+}
+
+exports.useFormObjectLoader = useFormObjectLoader;
