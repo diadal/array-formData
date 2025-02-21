@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "check-up": "yarn upgrade-interactive --latest",
-    "build": "rollup -c",
+    "build": "NODE_ENV=production rollup -c",
     "rebuilt-git": "git rm -r --cached .",
     "add-git": "git add ."
   },
